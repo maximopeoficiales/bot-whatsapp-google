@@ -25,7 +25,8 @@ let MessageService = class MessageService {
             `Tengo estas opciones por momento:`,
             '✅ Buscar en Google ⮕ !search',
             '✅ Busqueda completa en Google ⮕ !fullSearch',
-            '✅ Proximamente buscar Google Imagenes....',
+            '✅ Busqueda de imagenes en Google ⮕ !imagesSearch',
+            '✅ Proximamente descarga en pdf....',
         ].join("\n");
     }
 };

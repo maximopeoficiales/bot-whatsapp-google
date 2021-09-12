@@ -30,6 +30,7 @@ export class AppService {
       // esperando busquedas de google
       await this.searchGoogle(msg);
       await this.searchGoogleFull(msg);
+      await this.searchGoogleImages(msg);
     });
 
   }
@@ -57,6 +58,31 @@ export class AppService {
       }
     }
   }
+
+  async searchGoogleImages(msg: Message) {
+    const { from, body } = msg;
+
+    if (body === "!imagesSearch") {
+      await this.client.sendMessage(from, this._message.setTextWithBr([
+        "👉 Escriba ⮕ !imagesSearch :busqueda",
+        "👽 Ejemplo: ⮕ !imagesSearch spiderman"]));
+    }
+
+    if (body.includes("!imagesSearch")) {
+      let search = body.replace("!imagesSearch", "").trim();
+
+      if (search !== "") {
+        await this.client.sendMessage(from, `💬 Estas buscando '${search}'💬`);
+        await this.client.sendMessage(from, `💬 Cargando resultados.... '${search}'💬`);
+        let results = await this._google.searchImages(search);
+        console.log(results);
+
+        await this.sendImagesGoogle(from, search, results);
+      } else {
+        await this.client.sendMessage(from, `No haz buscado nada bro, intentelo de nuevo 😒😒`);
+      }
+    }
+  }
   async searchGoogleFull(msg: Message) {
     const { from, body } = msg;
 
@@ -68,13 +94,13 @@ export class AppService {
 
     if (body.includes("!fullSearch")) {
       let search = body.replace("!fullSearch", "").trim();
-      
+
       if (search !== "") {
         await this.client.sendMessage(from, `💬 Estas buscando '${search}'💬`);
         await this.client.sendMessage(from, `💬 Cargando resultados.... '${search}'💬`);
         let results = await this._google.searchDefinition(search, true);
         console.log(results);
-        
+
         await this.sendResultsGoogle(from, search, results);
       } else {
         await this.client.sendMessage(from, `No haz buscado nada bro, intentelo de nuevo 😒😒`);
@@ -98,6 +124,18 @@ export class AppService {
 
     if (results.images.length > 0) {
       results.images.forEach(async (img) => {
+        await this._wsService.sendMediaUrl(from, img);
+      });
+    } else {
+      await this.client.sendMessage(from, `No hay imagenes con '${search}' 😒😒`);
+    }
+
+  }
+
+  async sendImagesGoogle(from: string, search: string, results: string[]) {
+
+    if (results.length > 0) {
+      results.forEach(async (img) => {
         await this._wsService.sendMediaUrl(from, img);
       });
     } else {

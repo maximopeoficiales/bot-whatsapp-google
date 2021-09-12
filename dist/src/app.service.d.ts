@@ -11,6 +11,8 @@ export declare class AppService {
     constructor(_wsService: WhatsappService, _message: MessageService, _google: GoogleService);
     messageInitilizer(): Promise<void>;
     searchGoogle(msg: Message): Promise<void>;
+    searchGoogleImages(msg: Message): Promise<void>;
     searchGoogleFull(msg: Message): Promise<void>;
     sendResultsGoogle(from: string, search: string, results: ResultGoogle): Promise<void>;
+    sendImagesGoogle(from: string, search: string, results: string[]): Promise<void>;
 }

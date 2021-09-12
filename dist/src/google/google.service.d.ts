@@ -4,4 +4,5 @@ export declare class GoogleService {
     filterDataDefinitions: (data: string[]) => string[];
     filterLinkImages: (definitionsData: any[]) => string[];
     searchDefinition: (definition: string, fullData?: boolean) => Promise<ResultGoogle>;
+    searchImages: (search: string) => Promise<string[]>;
 }

@@ -41,7 +41,7 @@ export const searchDefinition = async (definition: string, fullData: boolean = f
                 }
             }
         },
-        
+
 
     });
     let definitions = filterDataNotRepeat(resp.data.definitions as string[]);
@@ -53,6 +53,25 @@ export const searchDefinition = async (definition: string, fullData: boolean = f
     }
 }
 
+export const searchImages = async (search: string): Promise<any> => {
+    search = encodeURI(search);
+    let resp = await scrapeIt<any>(`https://www.google.com.pe/search?q=${search}&sxsrf=AOaemvJcuJGnW-kgddjlV1jI4GWbm40bMg:1631465768765&source=lnms&tbm=isch&sa=X&ved=0ahUKEwivz_DM8_nyAhU7JrkGHTsyCCcQ_AUIBigB`, {
 
-searchDefinition("perro", true).then(console.log);
+        images: {
+            listItem: ".NZWO1b img.yWs4tf",
+            data: {
+                link: {
+                    attr: "src"
+                }
+            }
+        },
+
+
+    });
+    console.log(resp.data.images.map(e => e.link));
+
+}
+
+
+searchImages("Angel Monje").then(console.log);
 

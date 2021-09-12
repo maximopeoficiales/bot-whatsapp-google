@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.searchDefinition = void 0;
+exports.searchImages = exports.searchDefinition = void 0;
 const scrapeIt = require("scrape-it");
 const fs = require("fs");
 const url = "https://www.google.com.pe/search?q=";
@@ -51,5 +51,20 @@ const searchDefinition = async (definition, fullData = false) => {
     };
 };
 exports.searchDefinition = searchDefinition;
-(0, exports.searchDefinition)("perro", true).then(console.log);
+const searchImages = async (search) => {
+    search = encodeURI(search);
+    let resp = await scrapeIt(`https://www.google.com.pe/search?q=${search}&sxsrf=AOaemvJcuJGnW-kgddjlV1jI4GWbm40bMg:1631465768765&source=lnms&tbm=isch&sa=X&ved=0ahUKEwivz_DM8_nyAhU7JrkGHTsyCCcQ_AUIBigB`, {
+        images: {
+            listItem: ".NZWO1b img.yWs4tf",
+            data: {
+                link: {
+                    attr: "src"
+                }
+            }
+        },
+    });
+    console.log(resp.data.images.map(e => e.link));
+};
+exports.searchImages = searchImages;
+(0, exports.searchImages)("Angel Monje").then(console.log);
 //# sourceMappingURL=webscraping.js.map
